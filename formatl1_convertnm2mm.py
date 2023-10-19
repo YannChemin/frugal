@@ -35,11 +35,10 @@ try:
             # Modify the columns in f1
             row1[5] = str(float(row1[5]) / 1000)
             row1[6] = str(float(row1[6]) / 1000)
-
-        # Divide elements in the same line number in f2 and f3 by 1000
-        for i in range(len(row2)):
-            row2[i] = str(float(row2[i]) / 1000)
-            row3[i] = str(float(row3[i]) / 1000)
+            # Divide elements in the same line number in f2 and f3 by 1000
+            for i in range(len(row2)):
+                row2[i] = str(float(row2[i]) / 1000)
+                row3[i] = str(float(row3[i]) / 1000)
 
         # Write the modified rows to the output fs
         csv_writer1.writerow(row1)
