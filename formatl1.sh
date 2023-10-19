@@ -5,10 +5,8 @@
 # no header
 # columns: spectral_library,sample_id,name,x_unit,num_wavelengths,minwavelength,maxwavelength
 
-# Copy subset for test
+# Copy 
 cp library_1.csv l1.csv
-cp library_2.csv l2.csv
-cp library_3.csv l3.csv
 
 # Remove header
 tail -n +2 l1.csv > temp
@@ -24,7 +22,8 @@ sed -i 's/\"//g' l1.csv
 # Remove Georgian mid point (Hex=C2, Oct=267)
 sed -i 's/\o267//' l1.csv
 
-# Convert values in nanometer to micrometer
+# Convert values in nanometer to micrometer (need to run formatl2l3.sh first)
+bash formatl2l3.sh
 python formatl1_convertnm2mm.py
 
 # We need to create one file per storage column
