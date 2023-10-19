@@ -6,10 +6,21 @@
 # columns: spectral_library,sample_id,name,x_unit,num_wavelengths,minwavelength,maxwavelength
 
 # Copy subset for test
-head -n200 library_1.csv > l1.csv
+cp library_1.csv l1.csv
+
 # Remove header
 tail -n +2 l1.csv > temp
 mv temp l1.csv
+
+# Clean up () & [] from the text they create issues in processing
+sed -i 's/)//g' l1.csv
+sed -i 's/(//g' l1.csv
+sed -i 's/\]//g' l1.csv
+sed -i 's/\[//g' l1.csv
+sed -i 's/\"//g' l1.csv
+
+# Remove Georgian mid point (Hex=C2, Oct=267)
+sed -i 's/\o267//' l1.csv
 
 # We need to create one file per storage column
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\1/' l1.csv > l1_spectral_library.h
@@ -24,7 +35,7 @@ sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\7/' l1.csv > l1_maximum
 for file in l1_spectral_library.h l1_name.h l1_unit.h l1_sample_id.h l1_number_wavelengths.h l1_minimum_wavelength.h l1_maximum_wavelength.h
 do
 	# Append at the end of each line
-	sed -i 's/$/;/' $file
+	sed -i 's/$/;/' $file 
 	# Append the line number to each line
 	sed = $file | sed 'N;s/\n/\] = /' > temp
 	mv temp $file
@@ -45,7 +56,6 @@ for file in l1_spectral_library.h l1_name.h l1_unit.h l1_sample_id.h l1_number_w
 do
 	sed -i 's/\(.*\)\[\(.*\)\]\(.*\)/echo "\1[$((\2-1))]\3"/ge' $file
 done
-
 
 for file in l1_spectral_library.h l1_name.h l1_unit.h 
 do
