@@ -10,6 +10,12 @@
 cp l2.csv l2.h
 cp l3.csv l3.h
 
+# Remove header
+tail -n +2 l2.h > temp
+mv temp l2.h
+tail -n +2 l3.h > temp
+mv temp l3.h
+
 # Loop for csv array files
 for file in l2.h l3.h
 do
