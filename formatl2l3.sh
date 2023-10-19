@@ -1,22 +1,10 @@
 # Process the l2.csv and l3.csv from raw arrays by line into C struct elements
 # Yann CHEMIN October 2023
 #
-# Format of csv files:
-# no header
-# one spectrum per line
-# values separated by comma
-#
-# Preserve original csv array files
-cp library_2.csv l2.csv
-cp library_3.csv l3.csv
 
-# Remove all columns but data array
-sed -i 's/\(.*\)\[\(.*\)]\(.*\)/\2/' l2.csv
-sed -i 's/\(.*\)\[\(.*\)]\(.*\)/\2/' l3.csv
-
-# Remove header
-tail -n +2 l2.csv > l2.h
-tail -n +2 l3.csv > l3.h
+# Get the l2.csv & l3.csv into .h
+cp l2.csv l2.h
+cp l3.csv l3.h
 
 # Loop for csv array files
 for file in l2.h l3.h

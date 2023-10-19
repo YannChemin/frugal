@@ -22,15 +22,38 @@ sed -i 's/\"//g' l1.csv
 # Remove Georgian mid point (Hex=C2, Oct=267)
 sed -i 's/\o267//' l1.csv
 
-# Convert values in nanometer to micrometer (need to run formatl2l3.sh first)
-bash formatl2l3.sh
+# Format of l2 & l3 csv files:
+# no header
+# one spectrum per line
+# values separated by comma
+#
+# Preserve original csv array files
+cp library_2.csv l2.csv
+cp library_3.csv l3.csv
+
+# Remove all columns but data array
+sed -i 's/\(.*\)\[\(.*\)]\(.*\)/\2/' l2.csv
+sed -i 's/\(.*\)\[\(.*\)]\(.*\)/\2/' l3.csv
+
+# Remove header
+tail -n +2 l2.csv > temp 
+mv temp l2.csv
+tail -n +2 l3.csv > temp
+mv temp l3.csv
+
+# Convert the nanometers into micrometers
 python formatl1_convertnm2mm.py
+mv l2_modified.csv l2.csv
+mv l3_modified.csv l3.csv
+
+# Process l2.csv and l3.csv
+bash formatl2l3.sh
 
 # We need to create one file per storage column
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\1/' l1.csv > l1_spectral_library.h
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\2/' l1.csv > l1_sample_id.h
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\3/' l1.csv > l1_name.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\4/' l1.csv > l1_unit.h
+# sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\4/' l1.csv > l1_unit.h
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\5/' l1.csv > l1_number_wavelengths.h
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\6/' l1.csv > l1_minimum_wavelength.h
 sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\7/' l1.csv > l1_maximum_wavelength.h

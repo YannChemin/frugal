@@ -7,9 +7,9 @@ f2_path = 'l2.csv'
 f3_path = 'l3.csv'
 
 # Create output fs to write the modified data
-output_f1_path = 'f1_modified.csv'
-output_f2_path = 'f2_modified.csv'
-output_f3_path = 'f3_modified.csv'
+output_f1_path = 'l1_modified.csv'
+output_f2_path = 'l2_modified.csv'
+output_f3_path = 'l3_modified.csv'
 
 # Open the fs for reading and writing
 f1 = open(f1_path, 'r', newline='')
