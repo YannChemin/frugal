@@ -5,31 +5,28 @@
 # no header
 # columns: spectral_library,sample_id,name,x_unit,num_wavelengths,minwavelength,maxwavelength
 
+# Copy subset for test
+head -n200 library_1.csv > l1.csv
+# Remove header
+tail -n +2 l1.csv > temp
+mv temp l1.csv
+
 # We need to create one file per storage column
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\1/' l1.csv > l1_spectral_libray.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\2/' l1.csv > l1_sample_id.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\3/' l1.csv > l1_name.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\4/' l1.csv > l1_unit.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\5/' l1.csv > l1_number_wavelengths.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\6/' l1.csv > l1_minimum_wavelength.h
-sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),/\7/' l1.csv > l1_maximum_wavelength.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\1/' l1.csv > l1_spectral_library.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\2/' l1.csv > l1_sample_id.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\3/' l1.csv > l1_name.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\4/' l1.csv > l1_unit.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\5/' l1.csv > l1_number_wavelengths.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\6/' l1.csv > l1_minimum_wavelength.h
+sed 's/\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\),\(.*\)/\7/' l1.csv > l1_maximum_wavelength.h
 
 # Set the line number and the =
-for file in l1_spectral_library.h l1_name.h l1_unit.h 
+for file in l1_spectral_library.h l1_name.h l1_unit.h l1_sample_id.h l1_number_wavelengths.h l1_minimum_wavelength.h l1_maximum_wavelength.h
 do
 	# Append at the end of each line
-	sed -i 's/$/";/' $file
-	# Append the line number to each line
-	sed = $file | sed 'N;s/\n/ = "/' > temp
-	mv temp $file
-done
-
-for file in l1_sample_id.h l1_number_wavelengths.h l1_minimum_wavelength.h l1_maximum_wavelength.h
-do
-	# Append ; at the end of each line
 	sed -i 's/$/;/' $file
 	# Append the line number to each line
-	sed = $file | sed 'N;s/\n/ = /' > temp
+	sed = $file | sed 'N;s/\n/\] = /' > temp
 	mv temp $file
 done
 
@@ -50,3 +47,8 @@ do
 done
 
 
+for file in l1_spectral_library.h l1_name.h l1_unit.h 
+do
+	sed -i 's/;/\";/' $file
+	sed -i 's/=\ /=\ \"/' $file
+done
